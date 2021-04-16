@@ -1,56 +1,37 @@
 package algo;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Test {
 	public static void main(String[] args) {
-		int n = 4;
+		String s = "110010101001";
 		
-		System.out.println(Arrays.toString(Solution.solution(n))); ;
+		Solution.solution(s);
 	}
 }
 
 class Solution {
-    public static int[] solution(int n) {
-    	int max = (n*(n+1))/2;
-        int answer [] = new int[max];
+    public static int[] solution(String s) {
+        int[] answer = new int[2];
+        int deleted = 0, deleteCount = 0;
+        String remain = s;
         
-        int arr [][] = new int [n][n];
-        for(int i=0; i<n; i++) {
-        	for(int j=0; j<n; j++) {
-        		arr[i][j] = -1;
-        	}
+        while(!remain.equals("1")) {
+	        String [] arr = remain.split("");
+	        Arrays.sort(arr);
+	
+	        int i=0;
+	        while(arr[i].equals("0")) {
+	        	deleted++;
+	        	i++;
+	        }
+	        
+	        
+	        remain = Integer.toBinaryString(arr.length-i);
+	        deleteCount++;
         }
-        
-        int i=0, j =0, k=1;
-     
-        arr[i][j] = k;
-        while(k < max) {
-        	while(i+1 < n && k < max && arr[i+1][j] < 0) {
-        		arr[++i][j] = ++k;
-        	}
-        	while(j+1 < n && k < max && arr[i][j+1] < 0) {
-        		arr[i][++j] = ++k;
-        	}
-        	while(i-1>0 && j-1>0 && k<max && arr[i-1][j-1]<0) {
-        		arr[--i][--j] = ++k;
-        	}
-        }
-        
-        ArrayList<Integer> a = new ArrayList<Integer>();
-        for(i=0; i<n; i++) {
-        	String num = "";
-        	for(j=0;j<n;j++) {
-        		if(arr[i][j] > 0) {
-        			a.add(arr[i][j]);
-        		}
-        	}
-        }
-        
-        for(i=0; i<a.size(); i++) {
-        	answer[i] = a.get(i);
-        }
+        answer[0] = deleteCount;
+        answer[1] = deleted;
         
         return answer;
     }

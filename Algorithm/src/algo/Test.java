@@ -24,7 +24,7 @@ class Solution {
 			int remainder = n % radix;
 			convertedStr = remainder + convertedStr;
 			n = quotient;
-		}
+		} 
 		
 		ArrayList<String> tempArr = new ArrayList<String>(Arrays.asList(convertedStr.split("")));
 		for(int i=0; i<tempArr.size(); i++) {

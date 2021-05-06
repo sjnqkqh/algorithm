@@ -1,66 +1,47 @@
 package algo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Test {
 	public static void main(String[] args) {
-		int [][] arr = {{1,1,0,0},{1,0,0,0},{1,0,0,1},{1,1,1,1}};
-		
-		System.out.println(Arrays.toString(Solution.solution(arr)));;
+		System.out.println(Solution.solution("aaabbab"));
 	}
 }
 
 class Solution {
-	static int[][] map;
-	static int one = 0;
-	static int zero = 0;
+    public static int solution(String s)
+    {
+        int answer = 0;
 
-	public static int[] solution(int [][] arr) {
-        int[] answer = new int[2];
+        // 원본 문자열
+        String [] originArr = s.split("");
+        ArrayList<String> originList = new ArrayList<String>(Arrays.asList(originArr));
+        ArrayList<String> newList = new ArrayList<String>();
         
-        int n = arr.length;
-        map = arr;
+        while(originList.size() > 1) {
+	        for(int i=0; i+1<originList.size(); i++) {
+	        	String a = originList.get(i);		// 인덱스에 해당하는 문자
+	        	String b = originList.get(i+1);		// 인덱스 다음 문자
+	        	
+	        	if(!a.equals(b)) { 	// a와 b가 다른 경우 - 해당 문자는 유지되어야 함
+	        		newList.add(a);
+	        		break;
+	        	} else {			// a와 b가 같은 경우 - 해당 문자열과 다음 문자열은 넘어가야 함.
+	        		i= i+1;
+	        	}
+	        }
+	        
+	        // 문자열 대조 결과를 저장하고, 임시 리스트는 초기화
+	        originList = (ArrayList<String>) newList.clone();	
+	        newList.clear();
+        }
         
-        quard(0,0,n);
-        answer[0] = zero;
-        answer[1] = one;
-        
+         if(originList.size()==0) {
+        	 answer = 1;
+         }
+    
         return answer;
-    }
-    
-    // 2차원 배열을 이력하면 해당 배열 안의 모든 수가 동일한지 확인
-    public static boolean check(int x, int y, int k) {
-    	int first = map[x][y];
-    	
-    	for(int i=x; i<x+k; i++) {
-    		for(int j=y; j<y+k; j++) {
-    			if(map[i][j] != first) {
-    				return false;
-    			}
-    		}
-    	}
-    	
-    	return true;
-    }
-    
-    // 2차원 배열을 입력하면 해당 배열을 4등분하는 함수
-    public static void quard(int x, int y, int n) {
-    	
-    	// 입력한 배열이 모두 같은 수로 이루어져 있다면 해당 수 카운트 증가
-    	if(check(x,y,n)) {
-    		int val = map[x][y];
-    		if(val==1) one++;
-    		else zero++;
-    		return;
-    	}
-    	
-    	// 입력한 배열이 모두 같은 수가 아니라면 4개로 나눠서 다시 재귀
-    	int half = n/2;
-    	quard(x, y, half);
-    	quard(x+half, y, half);
-    	quard(x, y+half, half);
-    	quard(x+half, y+half, half);
-   
     }
     
     

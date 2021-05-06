@@ -1,11 +1,11 @@
 package algo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Test {
 	public static void main(String[] args) {
-		System.out.println(Solution.solution("aaabbab"));
+		Solution.solution("cdcd");
 	}
 }
 
@@ -16,31 +16,39 @@ class Solution {
 
         // 원본 문자열
         String [] originArr = s.split("");
-        ArrayList<String> originList = new ArrayList<String>(Arrays.asList(originArr));
-        ArrayList<String> newList = new ArrayList<String>();
-        
-        while(originList.size() > 1) {
-	        for(int i=0; i+1<originList.size(); i++) {
-	        	String a = originList.get(i);		// 인덱스에 해당하는 문자
-	        	String b = originList.get(i+1);		// 인덱스 다음 문자
-	        	
-	        	if(!a.equals(b)) { 	// a와 b가 다른 경우 - 해당 문자는 유지되어야 함
-	        		newList.add(a);
-	        		break;
-	        	} else {			// a와 b가 같은 경우 - 해당 문자열과 다음 문자열은 넘어가야 함.
-	        		i= i+1;
-	        	}
-	        }
-	        
-	        // 문자열 대조 결과를 저장하고, 임시 리스트는 초기화
-	        originList = (ArrayList<String>) newList.clone();	
-	        newList.clear();
+        Queue<String> ori = new LinkedList<String>();
+        Queue<String> temp = new LinkedList<String>();
+
+        for(String item : originArr) {
+        	ori.add(item);
         }
         
-         if(originList.size()==0) {
-        	 answer = 1;
-         }
-    
+        // 입력된 문자열 길이가 홀수인 경우 무조건 0 반환 
+        if(s.length()%2 != 0) {
+        	return answer = 0;
+        }
+        
+        // 큐에서 첫번째 인덱스와 두번째 인덱스 비교
+        while(ori.size() > 1) {
+        	String a = ori.poll();
+        	String b = ori.peek();
+        	
+        	if(!a.equals(b)) {
+        		temp.add(a);
+        	} else {
+        		ori.poll();
+        	}
+
+        	if(ori.isEmpty() && !temp.isEmpty()) {
+        		ori.addAll(temp);
+        		temp.clear();
+        	}
+        }
+        
+        if(ori.size() == 0) {
+        	answer = 1;
+        }
+        
         return answer;
     }
     

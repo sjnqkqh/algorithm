@@ -1,55 +1,76 @@
 package algo;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.HashMap;
 
 public class Test {
 	public static void main(String[] args) {
-		int i[] = { 70, 50, 80, 50 };
+		String record[] = { "Enter uid1234 Muzi", "Enter uid4567 Prodo", "Leave uid1234", "Enter uid1234 Prodo",
+				"Change uid4567 Ryan" };
 
-		int r = Solution.solution(i, 100);
-		System.out.println(r);
+		Solution.solution(record);
 
 	}
 }
 
 class Solution {
-	static LinkedList<Integer> q = new LinkedList<Integer>();
-	static int answer = 0;
 
-	public static int solution(int[] people, int limit) {
+	public static String[] solution(String[] record) {
+		String[] answer = {};
+		int ArrSize = record.length;
+		HashMap<String, String> nickMap = new HashMap<String, String>();
 
-		// 사전 처리
-		Arrays.sort(people);
-		for (int item : people) {
-			q.add(item);
-		}
+		// 최종 별명 구하기
+		for (String item : record) {
+			String order[] = item.split(" ");
+			String orderStr = order[0];		// 명령어
+			String nameStr = order[1];		// 실제 아이디
+			String nickStr = "";			// 사용중인 닉네임
+			if (order.length == 3)	nickStr = order[2];
 
-		Solution.help(limit);
-
-		return answer;
-	}
-
-	// 무거운 놈들부터 구하고, 구할 사람 남으면 재귀
-	public static void help(int limit) {
-
-		int man = q.removeLast();
-		int can = limit - man;
-		
-		if(!q.isEmpty() && q.peek() <= can) {
-			for (int i = q.size() - 1; i >= 0; i--) {
-				if (q.get(i) <= can) {
-					int guhal = q.get(i);
-					can = can - guhal;
-					q.removeLastOccurrence(guhal);
-					break;
-				}
+			switch (orderStr) {
+			case "Enter":
+				nickMap.put(nameStr, nickStr);
+				break;
+				
+			case "Change":
+				nickMap.put(nameStr, nickStr);
+				ArrSize--;
+				break;
 			}
 		}
-		answer++;
-		
-		if(!q.isEmpty()) {
-			help(limit);
+
+		// 히스토리 남기기
+		answer = new String [ArrSize];
+		int index = 0;
+
+		for(int i=0; i<record.length; i++) {
+			String item = record[i];
+			String log = "";
+			
+			String order[] = item.split(" ");
+			String orderStr = order[0];
+			String nameStr = order[1];
+			
+			
+			switch (orderStr) {
+			case "Enter":
+				log = nickMap.get(nameStr)+"님이 들어왔습니다.";
+				answer[index] = log;
+				index++;
+				break;
+				
+			case "Leave":
+				log = nickMap.get(nameStr)+"님이 나갔습니다.";
+				answer[index] = log;
+				index++;
+				break;
+			}
+			
 		}
+		
+		System.out.println(Arrays.toString(answer));
+		
+		return answer;
 	}
 }

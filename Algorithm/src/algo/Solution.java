@@ -1,7 +1,7 @@
 package algo;
 
 
-import java.util.ArrayList;
+import java.io.FileInputStream;
 import java.util.Arrays;
 /////////////////////////////////////////////////////////////////////////////////////////////
 // 기본 제공코드는 임의 수정해도 관계 없습니다. 단, 입출력 포맷 주의
@@ -31,7 +31,6 @@ import java.util.Arrays;
 //System.out.println(AB);		       				     // long 변수 1개 출력하는 예제
 /////////////////////////////////////////////////////////////////////////////////////////////
 import java.util.Scanner;
-import java.io.FileInputStream;
 
 /*
    사용하는 클래스명이 Solution 이어야 하므로, 가급적 Solution.java 를 사용할 것을 권장합니다.
@@ -55,43 +54,43 @@ public class Solution
 		 */
 		Scanner sc = new Scanner(System.in);
 		int T;
-		T=sc.nextInt();
 		/*
 		   여러 개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 		*/
+		
+		int count = 1; //반복횟수
+		while(sc.hasNext())
+		{	
+			int answer = 0;
+			int arrLength = Integer.parseInt(sc.nextLine());					// 입력 내용
+			int [] heightsArr = new int [arrLength];
+			
+			String heightStr = sc.nextLine();
+			String [] tempStrArr = heightStr.split(" ");
+			for(int i=0; i<tempStrArr.length; i++) {
+				heightsArr[i] = Integer.parseInt(tempStrArr[i]);
+			}
+			// 아 무슨 입력 정리하는데 이렇게 오래 걸려 똥사이트 ㅡㅡ
+			
+			for(int i=2; i<heightsArr.length-2; i++) {
+				int [] caseArr = new int [4];
+				int rest = -1;
+				
+				caseArr[0] = heightsArr[i] - heightsArr[i-2];
+				caseArr[1] = heightsArr[i] - heightsArr[i-1];
+				caseArr[2] = heightsArr[i] - heightsArr[i+1];
+				caseArr[3] = heightsArr[i] - heightsArr[i+2];
+				
+				//조망권 획득했는지 확인
+				Arrays.sort(caseArr);		
+				rest = caseArr[0];
+				
+				if(rest > 0) answer = answer+rest;
+			}
+			
+			System.out.println("#"+count+" "+answer);
 
-		sc.nextLine();// 입출력 왜 이따위냐 진짜
-		for(int test_case = 1; test_case <= T; test_case++)
-		{
-			int [] numArr = new int [101];
-			int max = -1, maxIndex = -1;
-			
-			int problemNum 	= Integer.parseInt(sc.nextLine());	// 문제 번호
-			String numStr 	= sc.nextLine();					// 입력 내용
-			
-			// 입력 문자열 변환
-			String [] tempArr = numStr.split(" ");				
-			Integer [] scoreArr = new Integer [tempArr.length];
-			
-			for(int i=0; i<tempArr.length; i++) {
-				scoreArr[i] = Integer.parseInt(tempArr[i]);
-			}
-			
-			for(int i=0; i<scoreArr.length; i++) {
-				int score = scoreArr[i];
-				numArr[score] = numArr[score]+1;
-			}
-			
-			for(int i=0; i<numArr.length; i++) {
-				int prequency = numArr[i];
-				if(prequency>=max) {
-					max = prequency;
-					maxIndex = i;
-				}
-			}
-			
-			System.out.println("#"+problemNum+" "+maxIndex);
-			
+			count++;
 		}
 	}
 }

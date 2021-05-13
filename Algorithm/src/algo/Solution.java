@@ -1,6 +1,7 @@
 package algo;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.Arrays;
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +48,7 @@ public class Solution
 		   따라서 테스트를 수행할 때에는 아래 주석을 지우고 이 메소드를 사용하셔도 좋습니다.
 		   단, 채점을 위해 코드를 제출하실 때에는 반드시 이 메소드를 지우거나 주석 처리 하셔야 합니다.
 		 */
-		System.setIn(new FileInputStream("C:\\Users\\HOME_PC\\git\\algorithm\\Algorithm\\res\\input.txt"));
+		System.setIn(new FileInputStream("./res/input.txt"));
 
 		/*
 		   표준입력 System.in 으로부터 스캐너를 만들어 데이터를 읽어옵니다.
@@ -62,33 +63,12 @@ public class Solution
 		while(sc.hasNext())
 		{	
 			int answer = 0;
-			int arrLength = Integer.parseInt(sc.nextLine());					// 입력 내용
-			int [] heightsArr = new int [arrLength];
+			int roopCount 	  = sc.nextInt();		
+			String heightsStr = sc.nextLine();				// 입력 내용
 			
-			String heightStr = sc.nextLine();
-			String [] tempStrArr = heightStr.split(" ");
-			for(int i=0; i<tempStrArr.length; i++) {
-				heightsArr[i] = Integer.parseInt(tempStrArr[i]);
-			}
-			// 아 무슨 입력 정리하는데 이렇게 오래 걸려 똥사이트 ㅡㅡ
+			System.out.println(roopCount);
+			System.out.println(heightsStr);
 			
-			for(int i=2; i<heightsArr.length-2; i++) {
-				int [] caseArr = new int [4];
-				int rest = -1;
-				
-				caseArr[0] = heightsArr[i] - heightsArr[i-2];
-				caseArr[1] = heightsArr[i] - heightsArr[i-1];
-				caseArr[2] = heightsArr[i] - heightsArr[i+1];
-				caseArr[3] = heightsArr[i] - heightsArr[i+2];
-				
-				//조망권 획득했는지 확인
-				Arrays.sort(caseArr);		
-				rest = caseArr[0];
-				
-				if(rest > 0) answer = answer+rest;
-			}
-			
-			System.out.println("#"+count+" "+answer);
 
 			count++;
 		}
